@@ -9,8 +9,9 @@ class MenuComponent extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="http://www.google.com" className="navbar-brand">Best Friend</a></div>
                     <ul className="navbar-nav">
-                        <li><Link className="nav-link" to="/access">Add Feature</Link></li>
-                        <li><Link className="nav-link" to="/update-access">Save</Link></li>
+                        <li><Link className="nav-link" to="/Make">Add Feature</Link></li>
+                        <li><Link className="nav-link" to="/Manage">Manage Features</Link></li>
+                        <li><Link className="nav-link" to="/Help">Help</Link></li>
                     </ul>
                 </nav>
             </header>

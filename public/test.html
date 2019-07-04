@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <br />
+    <div className="App">
+        <header className="App-header">
+            <h1 className="App-title">Feature Management</h1>
+        </header>
+        <div>
+            <table id={'featuresTable'}>
+                <tbody>
+                {this.renderTableHeader()}
+                {this.renderTable()}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <button style={divStyle}
+                    className="btn btn-success"
+                    type="submit"
+                    onClick={this.handleSubmit}>Save</button>
+
+            <button style={divStyle}
+                    className="btn btn-add"
+                    type="add"
+                    onClick={this.handleAdd}>Add</button>
+            <button style={divStyle}
+                    type="close"
+                    onClick={this.handleClose}>Close</button>
+        </div>
+    </div>
+</div>
+<div>
+    <br/>
+    <div className="App">
+        <header className="App-header">
+            <h1 className="App-title">Feature Management</h1>
+        </header>
+        <div>
+            <h3 className="NoTable">No Records found. We suggest using the Add button</h3>
+        </div>
+        <div>
+            <button style={divStyle} className="btn btn-add" type="submit" onClick={this.handleAdd}>Add</button>
+            <button style={divStyle} type="close" onClick={this.handleClose}>Close</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

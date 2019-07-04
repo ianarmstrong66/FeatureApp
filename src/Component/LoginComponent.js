@@ -3,7 +3,8 @@ import loginService from '../service/GetAccessStatusService';
 import ApplicationService from '../service/GetApplicationsService';
 
 const divStyle = {
-  marginBottom: '7px'
+  marginBottom: '7px',
+  marginRight: '27px'
 };
 
 class LoginComponent extends Component {
@@ -11,7 +12,8 @@ class LoginComponent extends Component {
     loginName: "",
     pword: "",
     appList: [],
-    selectedApp: ""
+    selectedApp: "",
+    appID: 0
   };
 
   componentDidMount = async () => { //could use WillMount
@@ -30,27 +32,13 @@ class LoginComponent extends Component {
           }
 
           this.setState({ appList: [{id:'', display: 'Select an application'}].concat(AppsFromApi) });
+          window.sessionStorage.setItem("featureAllowed", false);
         })
         .catch(error => console.log(error.response));
-  }
-
-  bindDropDowns() {
-    // var appName = document.getElementById('appList').value;
-
-    for(var i=0; i < this.state.appList.length; i++) {
-      console.log("Handle: "+this.state.appList[i]);
-      // var appName = this.state.appList[i].appName;
-    }
-  }
-
-  handleUserChange = event => {
-    this.setState({ userid: event.target.value });
-    // console.log(event.target.value)
   };
 
-  handlePWChange = event => {
-    this.setState({ access: event.target.value });
-    // console.log(event.target.value)
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleAppsChange = event => {
@@ -61,7 +49,7 @@ class LoginComponent extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    loginService.executeGetService(this.state.userid, this.state.access)
+    loginService.executeGetService(this.state.loginName, this.state.pword)
       .then(res => {
         return res.data;
       }).then(data => {
@@ -69,11 +57,15 @@ class LoginComponent extends Component {
           this.setState( {
             loginName: "",
             pword: "",
+            selectedApp: "",
             appList: []
           });
           window.alert("Incorrect credentials. Please try again.");
           this.props.history.push('/login')
-        } else {
+        }
+        else {
+          window.sessionStorage.setItem("applicationID", this.state.selectedApp);
+          window.sessionStorage.setItem("featureAllowed", true);
           // console.log("Response is " + data + " and props offers "+ this.props);
           this.props.history.push('/Management')
         }
@@ -88,19 +80,18 @@ class LoginComponent extends Component {
         <form className="form-group" onSubmit={this.handleSubmit}>
           <div>
             <label>
-              <input required className="form-control" type="text" name="loginName" placeholder="User Name" onChange={this.handleUserChange} />
+              <input required className="form-control" type="text" name="loginName" placeholder="User Name" onChange={this.handleChange} />
             </label>
           </div>
           <div>
             <label>
-              <input required className="form-control" type="password" name="pword" placeholder="Password" onChange={this.handlePWChange} />
+              <input required className="form-control" type="password" name="pword" placeholder="Password" onChange={this.handleChange} />
             </label>
           </div>
           <div>
-
-            {/*<select className="custom-select" id="appList"  placeholder="Select" value={this.state.value}  onChange={this.handleAppsChange} onSelect="this.bindDropDowns()">*!/*/}
-              <select required className="custom-select" id="appList"  value={this.state.selectedApp} onChange={this.handleAppsChange} >
-              {(this.state.appList && this.state.appList.length > 0) && this.state.appList.map((schema) => <option key={schema.id} value={schema.id}>{schema.display}</option>)}
+            <select required className="custom-select" id="appList"  value={this.state.selectedApp} onChange={this.handleAppsChange} >
+              {(this.state.appList && this.state.appList.length > 0) && this.state.appList.map((schema) =>
+                  <option key={schema.id} value={schema.id}>{schema.display}</option>)}
             </select>
 
           </div>
